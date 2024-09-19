@@ -12,17 +12,6 @@ const productData = {
   imageUrl: "https://snack-code-uploads.s3.us-west-1.amazonaws.com/~asset/33a0be06a0cced0c5c40a32716d64d4f", 
 };
 
-const StarRating = ({ rating }) => {
-  const stars = [];
-  for (let i = 0; i < 5; i++) {
-    stars.push(
-      <Text key={i} style={styles.star}>
-        {i < rating ? "★" : "☆"}
-      </Text>
-    );
-  }
-  return <View style={styles.starContainer}>{stars}</View>;
-};
 
 export default function ProductScreen() {
   const navigation = useNavigation();
@@ -33,7 +22,8 @@ export default function ProductScreen() {
       <Text style={styles.productName}>{productData.name}</Text>
 
       <View style={styles.ratingRow}>
-        <StarRating rating={productData.rating} />
+        
+        <Text style={styles.star}>★★★★★</Text>
         <Text style={styles.reviewText}>(Xem {productData.reviews} đánh giá)</Text>
       </View>
 
