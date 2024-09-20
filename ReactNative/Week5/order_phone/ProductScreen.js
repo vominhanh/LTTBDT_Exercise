@@ -1,7 +1,6 @@
-// ProductScreen.js
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const productData = {
   name: "Điện Thoại Vsmart Joy 3 - Hàng chính hãng",
@@ -9,20 +8,27 @@ const productData = {
   reviews: 828,
   oldPrice: "1.790.000 đ",
   newPrice: "1.790.000 đ",
-  imageUrl: "https://snack-code-uploads.s3.us-west-1.amazonaws.com/~asset/33a0be06a0cced0c5c40a32716d64d4f", 
+  defaultImageUrl: "https://snack-code-uploads.s3.us-west-1.amazonaws.com/~asset/33a0be06a0cced0c5c40a32716d64d4f", 
 };
-
 
 export default function ProductScreen() {
   const navigation = useNavigation();
+  const route = useRoute();
+  const [imageUrl, setImageUrl] = useState(productData.defaultImageUrl);
+
+
+  useEffect(() => {
+    if (route.params?.selectedImage) {
+      setImageUrl(route.params.selectedImage);
+    }
+  }, [route.params?.selectedImage]);
 
   return (
     <View style={styles.container}>
-      <Image source={{ uri: productData.imageUrl }} style={styles.image} />
+      <Image source={{ uri: imageUrl }} style={styles.image} />
       <Text style={styles.productName}>{productData.name}</Text>
 
       <View style={styles.ratingRow}>
-        
         <Text style={styles.star}>★★★★★</Text>
         <Text style={styles.reviewText}>(Xem {productData.reviews} đánh giá)</Text>
       </View>
@@ -71,9 +77,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
-  starContainer: {
-    flexDirection: 'row',
-  },
   star: {
     fontSize: 20,
     color: '#f5a623',
@@ -92,7 +95,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'gray',
     textDecorationLine: 'line-through',
-    
   },
   newPrice: {
     fontSize: 20,

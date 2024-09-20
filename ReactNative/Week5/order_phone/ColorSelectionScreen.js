@@ -1,35 +1,37 @@
-// ColorSelectionScreen.js
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const productData = {
   name: "Điện Thoại Vsmart Joy 3",
-  description: "Hàng chính hãng",
+  description: "Cung cấp bởi Tiki Tradding",
+  gia:"1.790.000 đ",
   colors: [
-    { name: "Màu Xanh nhạt", hex: "#b2f4ff" },
-    { name: "Màu Đỏ", hex: "#ff2d2d" },
-    { name: "Màu Đen", hex: "#000000" },
-    { name: "Màu Xanh dương", hex: "#0044cc" },
+    { name: "Xanh nhạt", hex: "#b2f4ff", imageUrl: "https://snack-code-uploads.s3.us-west-1.amazonaws.com/~asset/aee6d16882f7e9e9e4154103c6678314" },
+    { name: "Đỏ", hex: "#ff2d2d", imageUrl: "https://snack-code-uploads.s3.us-west-1.amazonaws.com/~asset/00d431560e7cf43d4f0810a3d194786c" },
+    { name: "Đen", hex: "#000000", imageUrl: "https://snack-code-uploads.s3.us-west-1.amazonaws.com/~asset/e1d44ffa1b1d1fb2f5008c63d6144f89" },
+    { name: "Xanh dương", hex: "#0044cc", imageUrl: "https://snack-code-uploads.s3.us-west-1.amazonaws.com/~asset/33a0be06a0cced0c5c40a32716d64d4f" },
   ],
   imageUrl: "https://snack-code-uploads.s3.us-west-1.amazonaws.com/~asset/33a0be06a0cced0c5c40a32716d64d4f", 
 };
 
 export default function ColorSelectionScreen() {
-  const [selectedColor, setSelectedColor] = useState(null);
+  const navigation = useNavigation();
+  const [selectedImage, setSelectedImage] = useState(productData.colors[0].imageUrl);
 
-  const renderColorItem = ({ item }) => {
-    return (
-      <TouchableOpacity
-        style={[styles.colorItem, { backgroundColor: item.hex }]}
-        onPress={() => setSelectedColor(item.name)}
-      />
-    );
-  };
+  const renderColorItem = ({ item }) => (
+    <TouchableOpacity
+      style={[styles.colorItem, { backgroundColor: item.hex }]}
+      onPress={() => {
+        setSelectedImage(item.imageUrl);
+      }}
+    />
+  );
 
   return (
     <View style={styles.container}>
       <View style={styles.productInfoContainer}>
-        <Image source={{ uri: productData.imageUrl }} style={styles.productImage} />
+        <Image source={{ uri: selectedImage }} style={styles.productImage} />
         <View style={styles.productTextContainer}>
           <Text style={styles.productName}>{productData.name}</Text>
           <Text style={styles.productDescription}>{productData.description}</Text>
@@ -44,7 +46,10 @@ export default function ColorSelectionScreen() {
         contentContainerStyle={styles.colorList}
       />
 
-      <TouchableOpacity style={styles.confirmButton}>
+      <TouchableOpacity 
+        style={styles.confirmButton}
+        onPress={() => navigation.navigate('Product', { selectedImage })} 
+      >
         <Text style={styles.confirmButtonText}>XONG</Text>
       </TouchableOpacity>
     </View>
